@@ -48,10 +48,10 @@ export default {
   },
   data () {
     return {
-      scoresPlayer: [10, 15],
+      scoresPlayer: [0, 0],
       numbersDice: [3, 4],
       activePlayer: 0,
-      currentPlayer: 20,
+      currentPlayer: 0,
       isPlaying: false,
       isOpenPopup: false
     }
@@ -64,20 +64,38 @@ export default {
     handleConfirm() {
       this.isOpenPopup = false;
       this.isPlaying = true;
+
+      this.numbersDice = [1, 1];
     },
     handleRollDice() {
       if (this.isPlaying) {
         let numberDice1 = Math.floor(Math.random() * 6) + 1;
         let numberDice2 = Math.floor(Math.random() * 6) + 1;
 
-        let numbersDiceClone = [numberDice1, numberDice2];
+        this.numbersDice = [numberDice1, numberDice2];
 
-        this.numbersDice = [...numbersDiceClone];
-        console.log(this.numbersDice);
+        if (numberDice1 == 1 || numberDice2 == 1) {
+          setTimeout(() => {
+
+            alert(`Người chơi Player ${this.activePlayer + 1} đã quay vào số 1. Đen ghê !!!`);
+          }, 10);
+
+          this.nextPlayer();
+          console.log('nextPlayer ', this.activePlayer)
+        } else {
+          this.currentPlayer = numberDice1 + numberDice2;
+        }
       } else {
         alert('Hãy bấm New Game để bắt đầu trò chơi !!!');
       }
+    },
+    nextPlayer() {
+      this.activePlayer = this.activePlayer == 0 ? 1 : 0; 
+      this.currentPlayer = 0;
     }
+  },
+  computed: {
+    
   }
 }
 </script>
