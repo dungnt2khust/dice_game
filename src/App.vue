@@ -6,15 +6,18 @@
         v-bind:scoresPlayer="scoresPlayer"
         v-bind:activePlayer="activePlayer" 
         v-bind:currentPlayer="currentPlayer"
+        v-bind:isWinner="isWinner"
         />
       
       <!-- CONTROLS -->
       <controls
         v-bind:isPlaying="isPlaying"
+        v-bind:finalScore="finalScore"
 
         v-on:handleNewGame="handleNewGame"
         v-on:handleRollDice="handleRollDice" 
         v-on:handleHoldScore="handleHoldScore"
+        v-on:handleChangeFinalScore="handleChangeFinalScore"
         /> 
 
       <!-- DICES -->
@@ -54,7 +57,8 @@ export default {
       activePlayer: 0,
       currentPlayer: 0,
       isPlaying: false,
-      isOpenPopup: false
+      isOpenPopup: false,
+      finalScore: 10
     }
   },
   methods: {
@@ -81,6 +85,7 @@ export default {
             alert(`Người chơi Player ${this.activePlayer + 1} đã quay vào số 1. Đen ghê !!!`);
           }, 10);
 
+          this.currentPlayer = 0;
           this.nextPlayer();
           console.log('nextPlayer ', this.activePlayer)
         } else {
@@ -96,18 +101,36 @@ export default {
         scoresPlayerClone[this.activePlayer] += this.currentPlayer;
 
         this.scoresPlayer = [...scoresPlayerClone];
-        this.nextPlayer();
+
+        this.currentPlayer = 0;
+        if (!this.isWinner) {
+          this.nextPlayer();
+        }
       } else {
         alert('Hãy bấm New Game để bắt đầu trò chơi !!!');
       }
     },
+    handleChangeFinalScore(event) {
+      let newScore = parseInt(event.target.value);
+
+      if (newScore <= 0 || isNaN(newScore)) {
+        this.finalScore = '';
+      } else {
+        this.finalScore = newScore;
+      }
+    },
     nextPlayer() {
       this.activePlayer = this.activePlayer == 0 ? 1 : 0; 
-      this.currentPlayer = 0;
     }
   },
   computed: {
-    
+    isWinner() {
+      if (this.scoresPlayer[this.activePlayer] >= this.finalScore) {
+        this.isPlaying = false;
+        return true;
+      }
+      return false;
+    }
   }
 }
 </script>

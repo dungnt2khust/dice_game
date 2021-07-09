@@ -1,9 +1,9 @@
 <template>
     <div class="wrapper-players">
         <div 
-            v-bind:class="{active: activePlayer == 0}"
+            v-bind:class="{active: activePlayer == 0 && !this.isWinner, winner: activePlayer == 0 && this.isWinner}"
             class="player-panel">
-            <div class="player-name">Player 1</div>
+            <div class="player-name"> {{ getPlayername(0) }} </div>
             <div class="player-score">{{ scoresPlayer[0] }}</div>
             <div class="player-current-box">
                 <div class="player-current-label">Current</div>
@@ -12,9 +12,9 @@
         </div>
         
         <div 
-            v-bind:class="{active: activePlayer == 1}"
+            v-bind:class="{active: activePlayer == 1 && !this.isWinner, winner: activePlayer == 1 && this.isWinner}"
             class="player-panel">
-            <div class="player-name">Player 2</div>
+            <div class="player-name"> {{ getPlayername(1) }} </div>
             <div class="player-score">{{ scoresPlayer[1] }}</div>
             <div class="player-current-box">
                 <div class="player-current-label">Current</div>
@@ -30,10 +30,21 @@
         props: {
             scoresPlayer: {type: Array, default: []},
             activePlayer: {type: Number, default: 0},
-            currentPlayer: {type: Number, default: 0}
+            currentPlayer: {type: Number, default: 0},
+            isWinner: {type: Boolean, default: false}
         },
         data() {
             return {};
+        },
+        methods: {
+            getPlayername(index) {
+                let defaultName = 'Player ' + (index + 1);
+
+                if (index == this.activePlayer && this.isWinner) {
+                    defaultName = 'Winner!'
+                }
+                return defaultName;
+            }
         },
         computed: {
             
