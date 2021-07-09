@@ -1,20 +1,24 @@
 <template>
     <div class="wrapper-players">
-        <div class="player-panel winner">
-            <div class="player-name">Winner</div>
-            <div class="player-score">43</div>
+        <div 
+            v-bind:class="{active: activePlayer == 0}"
+            class="player-panel">
+            <div class="player-name">Player 1</div>
+            <div class="player-score">{{ scoresPlayer[0] }}</div>
             <div class="player-current-box">
                 <div class="player-current-label">Current</div>
-                <div class="player-current-score">11</div>
+                <div class="player-current-score"> {{ activePlayer == 0 ? currentPlayer : 0}}</div>
             </div>
         </div>
         
-        <div class="player-panel">
+        <div 
+            v-bind:class="{active: activePlayer == 1}"
+            class="player-panel">
             <div class="player-name">Player 2</div>
-            <div class="player-score">72</div>
+            <div class="player-score">{{ scoresPlayer[1] }}</div>
             <div class="player-current-box">
                 <div class="player-current-label">Current</div>
-                <div class="player-current-score">0</div>
+                <div class="player-current-score">{{ activePlayer == 1 ? currentPlayer : 0}}</div>
             </div>
         </div>
     </div>
@@ -23,16 +27,21 @@
 <script>
     export default {
         name: 'players',
+        props: {
+            scoresPlayer: {type: Array, default: []},
+            activePlayer: {type: Number, default: 0},
+            currentPlayer: {type: Number, default: 0}
+        },
         data() {
             return {};
+        },
+        computed: {
+            
         }
     }
 </script>
 
-<style>
-    /**********************************************
-  *** PLAYERS
-  **********************************************/
+<style> 
   .player-panel {
       width: 50%;
       float: left;

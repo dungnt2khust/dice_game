@@ -1,7 +1,9 @@
 <template>
     <div class="wrapper-dices">
         <div id="dice-1" class="dice">
-          <div class="spinner dice-3">
+          <div 
+            v-bind:class="'dice-' + numbersDice[0]"
+            class="spinner">
               <div class="face1">1</div>
               <div class="face2">2</div>
               <div class="face3">3</div>
@@ -11,7 +13,9 @@
           </div>
       </div>
       <div id="dice-2" class="dice">
-          <div class="spinner dice-6">
+          <div  
+            v-bind:class="'dice-' + numbersDice[1]"
+            class="spinner">
               <div class="face1">1</div>
               <div class="face2">2</div>
               <div class="face3">3</div>
@@ -26,6 +30,9 @@
 <script>
     export default {
         name: 'dices',
+        props: {
+            numbersDice: {type: Array, default: []} 
+        },
         data() {
             return {};
         }
@@ -33,7 +40,6 @@
 </script>
 
 <style>
-    /* Dice */
   #dice-1 { top: 120px; }
   #dice-2 { top: 250px; }
 
