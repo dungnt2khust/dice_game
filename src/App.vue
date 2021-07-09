@@ -14,6 +14,7 @@
 
         v-on:handleNewGame="handleNewGame"
         v-on:handleRollDice="handleRollDice" 
+        v-on:handleHoldScore="handleHoldScore"
         /> 
 
       <!-- DICES -->
@@ -85,6 +86,17 @@ export default {
         } else {
           this.currentPlayer = numberDice1 + numberDice2;
         }
+      } else {
+        alert('Hãy bấm New Game để bắt đầu trò chơi !!!');
+      }
+    },
+    handleHoldScore() {
+      if (this.isPlaying) {
+        let scoresPlayerClone = [...this.scoresPlayer];
+        scoresPlayerClone[this.activePlayer] += this.currentPlayer;
+
+        this.scoresPlayer = [...scoresPlayerClone];
+        this.nextPlayer();
       } else {
         alert('Hãy bấm New Game để bắt đầu trò chơi !!!');
       }
