@@ -2,13 +2,31 @@
   <div id="app">
     <div class="wrapper clearfix"> 
       <!-- PLAYERS -->
-      <players/>
+      <players 
+        v-bind:scoresPlayer="scoresPlayer"
+        v-bind:activePlayer="activePlayer" 
+        v-bind:currentPlayer="currentPlayer"
+        />
       
       <!-- CONTROLS -->
-      <controls/> 
+      <controls
+        v-bind:isPlaying="isPlaying"
+
+        v-on:handleNewGame="handleNewGame"
+        v-on:handleRollDice="handleRollDice" 
+        /> 
 
       <!-- DICES -->
-      <dices/>
+      <dices
+        v-bind:numbersDice="numbersDice"
+        />
+
+      <!-- POPUP RULE -->
+      <popup-rule
+        v-bind:isOpenPopup="isOpenPopup"
+
+        v-on:handleConfirm="handleConfirm"
+        />
     </div>
   </div>
 </template>
@@ -18,31 +36,62 @@
 import Players from './components/Players.vue'
 import Controls from './components/Controls.vue'
 import Dices from './components/Dices.vue'
+import PopupRule from './components/PopupRule.vue'
 
 export default {
   name: 'app',
   components: {
     Players,
     Controls,
-    Dices
+    Dices,
+    PopupRule
   },
   data () {
     return {
+      scoresPlayer: [10, 15],
+      numbersDice: [3, 4],
+      activePlayer: 0,
+      currentPlayer: 20,
+      isPlaying: false,
+      isOpenPopup: false
+    }
+  },
+  methods: {
+    handleNewGame() {
+      this.isPlaying = true;
+      this.isOpenPopup = true;
+    },
+    handleConfirm() {
+      this.isOpenPopup = false;
+      this.isPlaying = true;
+    },
+    handleRollDice() {
+      if (this.isPlaying) {
+        let numberDice1 = Math.floor(Math.random() * 6) + 1;
+        let numberDice2 = Math.floor(Math.random() * 6) + 1;
+
+        let numbersDiceClone = [numberDice1, numberDice2];
+
+        this.numbersDice = [...numbersDiceClone];
+        console.log(this.numbersDice);
+      } else {
+        alert('Hãy bấm New Game để bắt đầu trò chơi !!!');
+      }
     }
   }
 }
 </script>
 
 <style>
-  /**********************************************
-  *** GENERAL
-  **********************************************/
-
   * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       
+  }
+
+  html {
+    font-size: 62.5%;
   }
 
   .clearfix::after {
